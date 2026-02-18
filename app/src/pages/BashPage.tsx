@@ -1,10 +1,17 @@
-import { Terminal, Box, Layers, Zap, Code2, BookOpen, Settings, Sparkles } from 'lucide-react';
+import BashCourse from '../sections/BashCourse';
+import { Terminal, Box, Layers, Zap, Code2, BookOpen, Settings, Sparkles, Layout } from 'lucide-react';
 import PageLayout, { SectionHeading, ConceptBlock, KeyPoint, InfoCard } from './PageLayout';
 import type { SectionData } from './PageLayout';
 
 const COLOR = '#4EAA25';
 
 const sections: SectionData[] = [
+    {
+        id: 'course',
+        title: 'Module de Cours',
+        icon: Layout,
+        content: <div className="-mx-4 sm:-mx-8 lg:-mx-12"><BashCourse className="!py-0 !bg-transparent" /></div>
+    },
     {
         id: 'intro',
         title: 'Introduction',

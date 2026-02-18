@@ -1,10 +1,17 @@
-import { Layers, Globe, Smartphone, Palette, Shield, Cpu, Box, Sparkles, Zap, BarChart3, Database } from 'lucide-react';
+import OtherLanguagesCourse from '../sections/OtherLanguagesCourse';
+import { Layers, Globe, Smartphone, Palette, Shield, Cpu, Sparkles, BarChart3, Layout } from 'lucide-react';
 import PageLayout, { SectionHeading, SubSection, KeyPoint } from './PageLayout';
 import type { SectionData } from './PageLayout';
 
 const COLOR = '#FF2ECC';
 
 const sections: SectionData[] = [
+    {
+        id: 'course',
+        title: 'Programmes Spécialisés',
+        icon: Layout,
+        content: <div className="-mx-4 sm:-mx-8 lg:-mx-12"><OtherLanguagesCourse className="!py-0 !bg-transparent" /></div>
+    },
     {
         id: 'intro',
         title: 'Introduction',

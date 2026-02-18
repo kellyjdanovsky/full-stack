@@ -1,10 +1,17 @@
-import { Server, Box, Layers, Zap, Code2, BookOpen, Settings, Sparkles, Cpu, GitBranch } from 'lucide-react';
+import GoCourse from '../sections/GoCourse';
+import { Server, Box, Layers, Zap, Code2, BookOpen, Settings, Sparkles, Cpu, GitBranch, Layout } from 'lucide-react';
 import PageLayout, { SectionHeading, ConceptBlock, KeyPoint, InfoCard } from './PageLayout';
 import type { SectionData } from './PageLayout';
 
 const COLOR = '#00ADD8';
 
 const sections: SectionData[] = [
+    {
+        id: 'course',
+        title: 'Module de Cours',
+        icon: Layout,
+        content: <div className="-mx-4 sm:-mx-8 lg:-mx-12"><GoCourse className="!py-0 !bg-transparent" /></div>
+    },
     {
         id: 'intro',
         title: 'Introduction',

@@ -3,8 +3,11 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
     Code2, BookOpen, Clock, AlertTriangle, Lightbulb, Target,
-    CheckCircle2, Play, FileCode, Layout, Palette, Monitor
+    Play, FileCode, Layout, Palette, Monitor, Info
 } from 'lucide-react';
+import { htmlCssContent } from '../data/courseContent';
+import type { Lesson } from '../data/courseContent';
+import LessonDialog from '../components/LessonDialog';
 
 interface HTMLCSSCourseProps {
     className?: string;
@@ -70,42 +73,6 @@ const cssProperties = [
     },
 ];
 
-const learningModules = [
-    {
-        level: 'Débutant',
-        color: '#00E676',
-        duration: '4-6 semaines',
-        modules: [
-            { title: 'Structure HTML de base', duration: '1 semaine', topics: ['DOCTYPE, html, head, body', 'Balises de titre h1-h6', 'Paragraphes et liens', 'Images et attributs'] },
-            { title: 'Formulaires et tableaux', duration: '1 semaine', topics: ['input, select, textarea', 'Types de champs', 'Validation HTML5', 'Tables de données'] },
-            { title: 'CSS Fondamental', duration: '1 semaine', topics: ['Sélecteurs (classe, id, élément)', 'Box Model (margin, padding, border)', 'Couleurs et typographie', 'Unités (px, rem, em, %)'] },
-            { title: 'Mise en page CSS', duration: '1-2 semaines', topics: ['Flexbox complet', 'CSS Grid basique', 'Position (relative, absolute)', 'Float et clear (legacy)'] },
-        ]
-    },
-    {
-        level: 'Intermédiaire',
-        color: '#FFB300',
-        duration: '4-6 semaines',
-        modules: [
-            { title: 'HTML Sémantique & Accessibilité', duration: '1 semaine', topics: ['Balises sémantiques', 'ARIA labels & roles', 'Alt text, tabindex', 'Lecteurs d\'écran'] },
-            { title: 'CSS Avancé', duration: '2 semaines', topics: ['Animations @keyframes', 'Transitions et transforms', 'Variables CSS (custom properties)', 'Pseudo-éléments ::before, ::after'] },
-            { title: 'Responsive Design', duration: '1-2 semaines', topics: ['Media queries', 'Mobile-first approach', 'Viewport units (vw, vh)', 'Container queries'] },
-            { title: 'Méthodologies CSS', duration: '1 semaine', topics: ['BEM naming convention', 'CSS Modules', 'Atomic CSS concepts', 'Specificity management'] },
-        ]
-    },
-    {
-        level: 'Avancé',
-        color: '#FF2ECC',
-        duration: '4-8 semaines',
-        modules: [
-            { title: 'CSS moderne & Grid avancé', duration: '2 semaines', topics: ['Subgrid', 'Container queries avancées', 'Cascade layers @layer', ':has(), :is(), :where()'] },
-            { title: 'Performances & Optimisation', duration: '1-2 semaines', topics: ['Critical CSS', 'Content-visibility', 'Will-change property', 'Lighthouse audit'] },
-            { title: 'Préprocesseurs & Outils', duration: '1-2 semaines', topics: ['Sass/SCSS', 'PostCSS & Autoprefixer', 'CSS-in-JS concepts', 'Tailwind CSS'] },
-            { title: 'Web Components', duration: '1-2 semaines', topics: ['Custom Elements', 'Shadow DOM', 'Templates & Slots', 'CSS Parts'] },
-        ]
-    }
-];
-
 const commonMistakes = [
     { mistake: 'Oublier le DOCTYPE ou la balise meta viewport', solution: 'Toujours commencer par le template HTML5 complet', icon: '⚠️' },
     { mistake: 'Utiliser des div partout au lieu de balises sémantiques', solution: 'Utiliser header, nav, main, section, article, footer', icon: '⚠️' },
@@ -148,7 +115,6 @@ const suggestedProjects = [
     { name: 'Dashboard admin', level: 'Intermédiaire', duration: '2-3 semaines', desc: 'Interface d\'administration avec sidebar, charts placeholders, tables', skills: ['CSS Grid', 'Variables CSS', 'Dark mode', 'Animations'] },
     { name: 'Clone d\'un site connu', level: 'Intermédiaire', duration: '2-3 semaines', desc: 'Reproduire la page d\'accueil de Spotify, Netflix ou Apple', skills: ['Grid avancé', 'Gradients', 'Hover effects', 'Responsive'] },
     { name: 'Design System complet', level: 'Avancé', duration: '3-4 semaines', desc: 'Bibliothèque de composants réutilisables (boutons, cards, modals...)', skills: ['BEM', 'Variables CSS', 'Custom properties', 'Documentation'] },
-    { name: 'Site e-commerce responsive', level: 'Avancé', duration: '3-4 semaines', desc: 'Catalogue produits, panier, filtres, responsive complet', skills: ['Grid layout', 'Container queries', 'Animations', 'Performance'] },
 ];
 
 const vocabulary = [
@@ -160,10 +126,6 @@ const vocabulary = [
     { term: 'Responsive', definition: 'Design qui s\'adapte à toutes les tailles d\'écran' },
     { term: 'Flexbox', definition: 'Modèle de layout 1D (ligne ou colonne) pour aligner des éléments' },
     { term: 'CSS Grid', definition: 'Modèle de layout 2D (lignes et colonnes) pour des mises en page complexes' },
-    { term: 'Media Query', definition: 'Règle CSS conditionnelle basée sur la taille de l\'écran' },
-    { term: 'Pseudo-classe', definition: 'Sélecteur d\'état (:hover, :focus, :nth-child)' },
-    { term: 'Pseudo-élément', definition: 'Élément virtuel (::before, ::after, ::placeholder)' },
-    { term: 'Attribut HTML', definition: 'Information supplémentaire sur une balise (class, id, src, href...)' },
 ];
 
 const codeExamples = [
@@ -204,31 +166,14 @@ const codeExamples = [
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }`
     },
-    {
-        title: 'CSS Grid — Layout responsive',
-        code: `.grid {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit, minmax(280px, 1fr)
-  );
-  gap: 1.5rem;
-  padding: 2rem;
-}
-
-@media (max-width: 768px) {
-  .grid {
-    grid-template-columns: 1fr;
-    padding: 1rem;
-  }
-}`
-    },
 ];
 
 export default function HTMLCSSCourse({ className = '' }: HTMLCSSCourseProps) {
     const sectionRef = useRef<HTMLElement>(null);
-    const [activeModule, setActiveModule] = useState(0);
+    const [activeLevel, setActiveLevel] = useState(0);
     const [activeTab, setActiveTab] = useState<'tags' | 'css' | 'vocab' | 'code' | 'resources' | 'projects'>('tags');
     const [activeTagCategory, setActiveTagCategory] = useState('Structure');
+    const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
     const localTriggersRef = useRef<ScrollTrigger[]>([]);
 
     useLayoutEffect(() => {
@@ -251,6 +196,12 @@ export default function HTMLCSSCourse({ className = '' }: HTMLCSSCourseProps) {
 
     return (
         <section ref={sectionRef} id="htmlcss" className={`relative w-full bg-[#07040A] py-24 lg:py-32 ${className}`}>
+            <LessonDialog
+                lesson={selectedLesson}
+                onClose={() => setSelectedLesson(null)}
+                color={htmlCssContent[activeLevel]?.color || '#FF6B35'}
+            />
+
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute top-1/3 right-1/4 w-[35vw] h-[35vw] bg-[#FF6B35]/8 rounded-full blur-[150px]" />
                 <div className="absolute bottom-1/3 left-1/4 w-[30vw] h-[30vw] bg-[#2ED9FF]/8 rounded-full blur-[150px]" />
@@ -440,8 +391,8 @@ export default function HTMLCSSCourse({ className = '' }: HTMLCSSCourseProps) {
                                 <div key={i} className="p-4 bg-white/5 rounded-lg hover:bg-white/8 transition-colors border border-white/5">
                                     <div className="flex items-center justify-between mb-2">
                                         <span className={`px-2 py-0.5 rounded text-xs font-medium ${p.level === 'Débutant' ? 'bg-[#00E676]/20 text-[#00E676]' :
-                                                p.level === 'Intermédiaire' ? 'bg-[#FFB300]/20 text-[#FFB300]' :
-                                                    'bg-[#FF2ECC]/20 text-[#FF2ECC]'
+                                            p.level === 'Intermédiaire' ? 'bg-[#FFB300]/20 text-[#FFB300]' :
+                                                'bg-[#FF2ECC]/20 text-[#FF2ECC]'
                                             }`}>{p.level}</span>
                                         <span className="text-xs text-[#B8B2C6] flex items-center gap-1"><Clock className="w-3 h-3" />{p.duration}</span>
                                     </div>
@@ -464,36 +415,50 @@ export default function HTMLCSSCourse({ className = '' }: HTMLCSSCourseProps) {
                         <Layout className="w-5 h-5 text-[#2ED9FF]" /> 📚 Parcours d'Apprentissage Structuré
                     </h3>
                     <div className="flex gap-2 mb-6">
-                        {learningModules.map((lm, i) => (
-                            <button key={i} onClick={() => setActiveModule(i)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeModule === i ? 'text-white' : 'bg-white/5 text-[#B8B2C6] hover:bg-white/10'
-                                    }`} style={{ backgroundColor: activeModule === i ? lm.color : undefined }}>
+                        {htmlCssContent.map((lm, i) => (
+                            <button key={i} onClick={() => setActiveLevel(i)}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeLevel === i ? 'text-white' : 'bg-white/5 text-[#B8B2C6] hover:bg-white/10'
+                                    }`} style={{ backgroundColor: activeLevel === i ? lm.color : undefined }}>
                                 {lm.level}
                             </button>
                         ))}
                     </div>
                     <div className="flex items-center gap-2 mb-4 text-sm text-[#B8B2C6]">
-                        <Clock className="w-4 h-4" style={{ color: learningModules[activeModule].color }} />
-                        Durée estimée : <strong className="text-[#F4F2F7]">{learningModules[activeModule].duration}</strong>
+                        <Clock className="w-4 h-4" style={{ color: htmlCssContent[activeLevel]?.color }} />
+                        Durée estimée : <strong className="text-[#F4F2F7]">{htmlCssContent[activeLevel]?.duration}</strong>
                     </div>
-                    <div className="space-y-4">
-                        {learningModules[activeModule].modules.map((mod, i) => (
-                            <div key={i} className="flex gap-4 p-4 bg-white/5 rounded-lg">
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                                    style={{ backgroundColor: `${learningModules[activeModule].color}20` }}>
-                                    <span className="text-sm font-bold" style={{ color: learningModules[activeModule].color }}>{i + 1}</span>
+                    <div className="grid grid-cols-1 gap-4">
+                        {htmlCssContent[activeLevel]?.modules.map((mod, i) => (
+                            <div key={i}
+                                className={`group flex flex-col sm:flex-row gap-4 p-5 bg-white/5 rounded-2xl border border-white/5 transition-all hover:bg-white/10 hover:border-white/10 ${mod.lesson ? 'cursor-pointer' : ''}`}
+                                onClick={() => mod.lesson && setSelectedLesson(mod.lesson)}
+                            >
+                                <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110"
+                                    style={{ backgroundColor: `${htmlCssContent[activeLevel].color}20` }}>
+                                    <span className="text-lg font-bold" style={{ color: htmlCssContent[activeLevel].color }}>{i + 1}</span>
                                 </div>
                                 <div className="flex-1">
                                     <div className="flex items-center justify-between mb-2">
-                                        <h4 className="font-medium text-[#F4F2F7]">{mod.title}</h4>
-                                        <span className="text-xs text-[#B8B2C6]">{mod.duration}</span>
+                                        <h4 className="font-bold text-[#F4F2F7] text-lg group-hover:text-white transition-colors">{mod.title}</h4>
+                                        <span className="text-xs text-[#B8B2C6] bg-white/5 px-2 py-1 rounded-md">{mod.duration}</span>
                                     </div>
-                                    <div className="flex flex-wrap gap-2">
+                                    <div className="flex flex-wrap gap-2 mb-3">
                                         {mod.topics.map((t, j) => (
-                                            <span key={j} className="text-xs bg-white/5 text-[#B8B2C6] px-2 py-0.5 rounded">{t}</span>
+                                            <span key={j} className="text-xs bg-white/5 text-[#B8B2C6] px-2 py-0.5 rounded border border-white/5">{t}</span>
                                         ))}
                                     </div>
+                                    {mod.lesson && (
+                                        <div className="flex items-center gap-2 text-xs font-medium" style={{ color: htmlCssContent[activeLevel].color }}>
+                                            <Info className="w-3.5 h-3.5" />
+                                            Cliquez pour voir la leçon complète
+                                        </div>
+                                    )}
                                 </div>
+                                {mod.lesson && (
+                                    <div className="hidden sm:flex items-center justify-center p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+                                        <Play className="w-4 h-4" style={{ color: htmlCssContent[activeLevel].color }} />
+                                    </div>
+                                )}
                             </div>
                         ))}
                     </div>
@@ -532,11 +497,6 @@ export default function HTMLCSSCourse({ className = '' }: HTMLCSSCourseProps) {
                             { tip: 'Mobile-first pour le CSS', detail: 'Commencez par le style mobile, puis ajoutez des media queries pour les grands écrans' },
                             { tip: 'Utiliser box-sizing: border-box', detail: 'Ajoutez *, *::before, *::after { box-sizing: border-box; } en début de CSS' },
                             { tip: 'Organiser votre CSS logiquement', detail: 'Structure : Reset → Variables → Base → Components → Utilities' },
-                            { tip: 'Utiliser les unités relatives', detail: 'rem pour le texte, em pour les marges relatives, % pour les conteneurs' },
-                            { tip: 'Inspecter avec les DevTools', detail: 'F12 → onglet Elements pour débugger HTML/CSS en temps réel' },
-                            { tip: 'Écrire du HTML sémantique', detail: 'Les balises sémantiques améliorent SEO et accessibilité' },
-                            { tip: 'Nommer ses classes en BEM', detail: 'block__element--modifier : .card__title--active' },
-                            { tip: 'Minimiser la spécificité CSS', detail: 'Évitez les !important, préférez les classes simples' },
                         ].map((item, i) => (
                             <div key={i} className="p-3 bg-white/5 rounded-lg hover:bg-white/8 transition-colors">
                                 <p className="font-medium text-[#FFB300] text-sm mb-1">💡 {item.tip}</p>

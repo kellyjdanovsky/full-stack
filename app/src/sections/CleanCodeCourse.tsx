@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Code2, BookOpen, Clock, AlertTriangle, Target, CheckCircle, Shield, Layers, Brain, GitBranch, Terminal, Database } from 'lucide-react';
+import { cleanCodeContent } from '../data/courseContent';
 
 interface CleanCodeCourseProps { className?: string; }
 
@@ -263,6 +264,28 @@ export default function CleanCodeCourse({ className = '' }: CleanCodeCourseProps
                         </div>
                     </div>
                 )}
+
+                {/* Structured Path for Consistency */}
+                <div className="mt-12">
+                    <h3 className="text-xl font-bold text-[#F4F2F7] mb-8 flex items-center gap-2">
+                        <Layers className="w-5 h-5 text-[#7B2D8E]" /> 📚 Parcours de Spécialisation "Software Critic"
+                    </h3>
+                    <div className="grid grid-cols-1 gap-4">
+                        {cleanCodeContent[0].modules.map((mod, i) => (
+                            <div key={i} className="group p-5 bg-white/5 rounded-2xl border border-white/5 transition-all hover:bg-white/10">
+                                <div className="flex items-center justify-between mb-2">
+                                    <h4 className="font-bold text-[#F4F2F7]">{mod.title}</h4>
+                                    <span className="text-[10px] text-[#B8B2C6] uppercase tracking-widest">{mod.duration}</span>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {mod.topics.map((t, j) => (
+                                        <span key={j} className="text-[10px] bg-white/5 text-[#B8B2C6] px-2 py-0.5 rounded border border-white/5">{t}</span>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </section>
     );
